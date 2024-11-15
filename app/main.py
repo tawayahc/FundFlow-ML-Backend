@@ -36,11 +36,11 @@ async def extract_text_from_zip(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="No images found in the ZIP file.")
     
     # Extract text from the images
-    extracted_text = ocr_extractor.extract_text_from_images(images)
+    extracted_text = ocr_extractor.extract_text_from_images(images, categories=[])
 
     # Clean up the temporary ZIP file
     os.remove(zip_filepath)
 
     result = {f"image_{i + 1}": text for i, text in enumerate(extracted_text)}
 
-    return {"extracted_text": result}
+    return result
