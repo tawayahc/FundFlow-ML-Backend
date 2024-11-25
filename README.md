@@ -45,3 +45,40 @@ This project is a robust backend system built using FastAPI that provides API fo
    ```
    $ fastapi dev main.py
    ```
+3. Access the API documentation Visit http://127.0.0.1:8000/docs for the Swagger UI
+
+## API Endpoint
+
+### `/get_transaction` [POST]
+This endpoint processes an uploaded ZIP file containing images, extracts relevant information using OCR and QR code reading, and returns structured transaction data.
+
+**Request Parameters**
+- `file`: Uploaded ZIP file containing images
+- `header`: Dictionary containing the bearer token for authentication
+
+***Example of Parameter header***
+```json
+{
+    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IiIsInVzZXJfaWQiOjEsImV4cCI6MTczMjYwOTkwOX0.kdedIkkE8HFGH_XRIeO_tsis-D_JzZVGdJiYOPZgll4"
+}
+```
+
+**Response**
+- A dictionary containing the extracted transaction information for each image
+
+***Example of Response***
+```json
+{
+    "metadata": "0041000600000101030040220014158193429APM020415102TH91042BBB",
+    "bank": "ธนาคารกสิกรไทย",
+    "type": "expense",
+    "amount": 22500,
+    "category_id": 1,
+    "date": "2024-06-06",
+    "time": "19:34:00.000000",
+    "memo": "ค่าเทอม"
+}
+```
+
+
+
