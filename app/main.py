@@ -15,7 +15,7 @@ async def read_root():
     return {"message": "Hello World"}
 
 @app.post("/get_transaction")
-async def get_transaction(file: UploadFile = File(...), bearer_token: str = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IiIsInVzZXJfaWQiOjEsImV4cCI6MTczMjYwOTkwOX0.kdedIkkE8HFGH_XRIeO_tsis-D_JzZVGdJiYOPZgll4'):
+async def get_transaction(file: UploadFile = File(...), bearer_token: str = None):
     if not file.filename.lower().endswith('.zip'):
         raise HTTPException(status_code=400, detail="Uploaded file must be a ZIP archive.")
     
