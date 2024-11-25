@@ -1,6 +1,6 @@
 # FundFlow-ML-Backend
 
-This repository contains a Streamlit-based web application designed to perform various tasks including category management, dashboard visualization, Thai text analysis, and a virtual assistant feature.
+This project is a robust backend system built using FastAPI that provides API for data extraction, processing, and machine learning model integration. It is designed to handle various functionalities such as Optical Character Recognition (OCR), QR code reading, information extraction, and machine learning model predictions.
 
 ## Directory Structure
 
