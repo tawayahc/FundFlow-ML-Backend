@@ -50,7 +50,7 @@ This project is a robust backend system built using FastAPI that provides API fo
 ## API Endpoint
 
 ### `/get_transaction` [POST]
-This endpoint processes an uploaded ZIP file containing images, extracts relevant information using OCR and QR code reading, and returns structured transaction data.
+This endpoint processes an uploaded ZIP file containing images, detect only payment slip image to extracts relevant information using OCR and QR code reading, find relevant category by calculating cosine similarity implement with word embedding model, and returns structured transaction data.
 
 **Request Parameters**
 - `file`: Uploaded ZIP file containing images
