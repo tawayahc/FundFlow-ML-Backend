@@ -1,6 +1,5 @@
 import easyocr
 import numpy as np
-from .qr_code_reader import QRCodeReader
 
 class OCRExtractor:
     def __init__(self, languages=['en', 'th'], gpu=True):
@@ -12,7 +11,7 @@ class OCRExtractor:
         """
         self.reader = easyocr.Reader(languages, gpu=gpu)
 
-    def extract_text_from_images(self, images, categories):
+    def extract_text_from_images(self, images):
         """
         Extract text from a list of images.
 
@@ -20,19 +19,9 @@ class OCRExtractor:
         :return: List of extracted text.
         """
         extracted_text = []
-        qr_reader = QRCodeReader()
-
         for img in images:
-            decoded_text = qr_reader.read_qr_code(img)
-            if (decoded_text is not None) and (decoded_text not in categories):
-                img_np = np.array(img)
-                result = self.reader.readtext(img_np, detail=0)
-                data = {
-                    "decoded_text": decoded_text,
-                    "ocr_text": result
-                }
-                extracted_text.append(data)
-            else:
-                continue
+            img_np = np.array(img)
+            result = self.reader.readtext(img_np, detail=0)
+            extracted_text.append(result)
 
         return extracted_text
