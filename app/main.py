@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Header, Request
 from src.api.api_request_handler import APIRequestHandler
 from src.file.zip_image_reader import ZipImageReader
 from src.extraction.ocr_extractor import OCRExtractor
@@ -15,10 +15,17 @@ async def read_root():
     return {"message": "Hello World"}
 
 @app.post("/get_transaction")
-async def get_transaction(file: UploadFile = File(...), bearer_token: str = None):
+async def get_transaction(request: Request, file: UploadFile = File(...)):
     if not file.filename.lower().endswith('.zip'):
         raise HTTPException(status_code=400, detail="Uploaded file must be a ZIP archive.")
     
+    auth_header = request.headers.get('Authorization')
+    if auth_header is None:
+        raise HTTPException(status_code=401, detail='Authorization header missing')
+
+    if not auth_header.startswith('Bearer '):
+        raise HTTPException(status_code=401, detail='Invalid Authorization header format')
+
     # Save the uploaded ZIP file temporarily
     zip_filepath = f"data/{file.filename}"
     with open(zip_filepath, "wb") as buffer:
@@ -41,9 +48,9 @@ async def get_transaction(file: UploadFile = File(...), bearer_token: str = None
     decoded_texts = [qr_reader.read_qr_code(img) for img in slip_images]
 
     # Get the transaction history from the API
-    api_handler = APIRequestHandler(base_url="http://localhost:8080", headers={"Authorization": f"Bearer {bearer_token}"})
+    api_handler = APIRequestHandler(base_url="https://1x6zzn5k-8080.asse.devtunnels.ms/", headers={"Authorization": auth_header})
     transactions_history = api_handler.get("transactions/all")
-    metadata_history = [th['meta_data'] for th in transactions_history]
+    metadata_history = [th['meta_data'] for th in transactions_history if th.get('meta_data') is not None]
 
     # Get the index of unique metadata
     unique_index = [index for index, metadata in enumerate(decoded_texts) if metadata not in metadata_history]
@@ -59,6 +66,7 @@ async def get_transaction(file: UploadFile = File(...), bearer_token: str = None
     # Get the categories from the API
     categories = api_handler.get("categories/all")
     categories_name = [category['name'] for category in categories[1:]]
+    categories_id = [category['id'] for category in categories[1:]]
 
     get_info = InfoExtractor()
     word_embedding_model = FastTextSimilarity()
@@ -74,7 +82,7 @@ async def get_transaction(file: UploadFile = File(...), bearer_token: str = None
             "bank": info['bank'],
             "type": "expense",
             "amount": info['amount'] + info['fee'],
-            "category_id": categories_name.index(category) if category in categories_name else -1,
+            "category_id": categories_id[categories_name.index(category)] if category in categories_name else -1,
             "date": info['date'],
             "time": info['time'],
             "memo": info['memo']
