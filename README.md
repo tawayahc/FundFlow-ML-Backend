@@ -73,7 +73,7 @@ This endpoint processes an uploaded ZIP file containing images, detect only paym
        "metadata": "0041000600000101030040220014158193429APM020415102TH91042BBB",
        "bank": "ธนาคารกสิกรไทย",
        "type": "expense",
-       "amount": 22500,
+       "amount": 22500.0,
        "category_id": 1,
        "date": "2024-06-06",
        "time": "19:34:00.000000",
