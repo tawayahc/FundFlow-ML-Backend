@@ -68,16 +68,18 @@ This endpoint processes an uploaded ZIP file containing images, detect only paym
 
 ***Example of Response***
 ```json
-{
-    "metadata": "0041000600000101030040220014158193429APM020415102TH91042BBB",
-    "bank": "ธนาคารกสิกรไทย",
-    "type": "expense",
-    "amount": 22500,
-    "category_id": 1,
-    "date": "2024-06-06",
-    "time": "19:34:00.000000",
-    "memo": "ค่าเทอม"
-}
+[
+   {
+       "metadata": "0041000600000101030040220014158193429APM020415102TH91042BBB",
+       "bank": "ธนาคารกสิกรไทย",
+       "type": "expense",
+       "amount": 22500,
+       "category_id": 1,
+       "date": "2024-06-06",
+       "time": "19:34:00.000000",
+       "memo": "ค่าเทอม"
+   }
+]
 ```
 
 
