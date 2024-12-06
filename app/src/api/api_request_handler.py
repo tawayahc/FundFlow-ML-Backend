@@ -25,15 +25,7 @@ class APIRequestHandler:
         try:
             url = f"{self.base_url}/{endpoint.lstrip('/')}"
             response = requests.get(url, headers=self.headers, params=params, timeout=self.timeout)
-            response.raise_for_status()  # Raise exception for HTTP errors
+            response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
             return {"error": str(e)}
-
-    def set_headers(self, headers: Dict[str, str]):
-        """
-        Update or set headers for the requests.
-        
-        :param headers: A dictionary of headers to set.
-        """
-        self.headers.update(headers)

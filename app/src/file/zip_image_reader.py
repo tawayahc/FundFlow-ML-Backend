@@ -21,14 +21,13 @@ class ZipImageReader:
         try:
             with zipfile.ZipFile(self.zip_filepath, 'r') as zip_ref:
                 for file_info in zip_ref.infolist():
-                    # Skip directories, macOS metadata files, and non-image files
                     if file_info.is_dir() or file_info.filename.startswith('__MACOSX/') or not file_info.filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
                         continue
 
                     with zip_ref.open(file_info) as file:
                         try:
                             img = Image.open(BytesIO(file.read()))
-                            img.load()  # Ensure the image is fully loaded
+                            img.load()
                             images.append(img)
                         except (IOError, OSError):
                             print(f"Error opening image: {file_info.filename}")

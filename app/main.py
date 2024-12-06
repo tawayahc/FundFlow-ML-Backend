@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, UploadFile, File, HTTPException, Header, Request
+from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from src.api.api_request_handler import APIRequestHandler
 from src.file.zip_image_reader import ZipImageReader
 from src.extraction.ocr_extractor import OCRExtractor
@@ -48,7 +48,7 @@ async def get_transaction(request: Request, file: UploadFile = File(...)):
     decoded_texts = [qr_reader.read_qr_code(img) for img in slip_images]
 
     # Get the transaction history from the API
-    api_handler = APIRequestHandler(base_url="https://1x6zzn5k-8080.asse.devtunnels.ms/", headers={"Authorization": auth_header})
+    api_handler = APIRequestHandler(base_url="https://g8fzgrpj-8080.asse.devtunnels.ms/", headers={"Authorization": auth_header})
     transactions_history = api_handler.get("transactions/all")
     metadata_history = [th['meta_data'] for th in transactions_history if th.get('meta_data') is not None]
 
